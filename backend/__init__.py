@@ -25,7 +25,8 @@ def create_app(config_name):
     ma.init_app(app)
     limiter.init_app(app)
     cache.init_app(app)
-
+    
+#----------Docker support-----------
     @app.route("/")
     def index():
         return app.send_static_file("index.html")

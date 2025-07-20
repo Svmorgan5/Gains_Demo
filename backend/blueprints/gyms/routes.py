@@ -8,8 +8,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from marshmallow import ValidationError
 from sqlalchemy import select
 
-
-
+# ---------------------------
+# Gym Login Route
+# ---------------------------
 @gyms_bp.route("/login", methods=["POST"])
 def login_gym():
     try:
@@ -20,9 +21,11 @@ def login_gym():
     except ValidationError as e:
         return jsonify(e.messages), 400
 
+    # Find gym by email
     query = select(Gym).where(Gym.email == email)
     gym = db.session.execute(query).scalars().first()
 
+    # Check password and return token if valid
     if gym and check_password_hash(gym.password_hash, password):
         token = encode_token(gym.id)
         response = {
@@ -34,6 +37,9 @@ def login_gym():
     else:
         return jsonify({"message": "Invalid email or password!"}), 401
 
+# ---------------------------
+# Create a new gym
+# ---------------------------
 @gyms_bp.route("/", methods=["POST"])
 def create_gym():
     try:
@@ -41,11 +47,12 @@ def create_gym():
     except ValidationError as e:
         return jsonify(e.messages), 400
 
-    
+    # Prevent duplicate gyms by email
     query = select(Gym).where(Gym.email == gym_data["email"])
     if db.session.execute(query).scalars().first():
         return jsonify({"error": "Gym already exists with this email"}), 400
 
+    # Hash password and create gym record
     new_gym = Gym(
         name           = gym_data["name"],
         contact_number = gym_data.get("contact_number"),
@@ -58,11 +65,17 @@ def create_gym():
     db.session.commit()
     return gym_schema.jsonify(new_gym), 201
 
+# ---------------------------
+# Get all gyms (public info)
+# ---------------------------
 @gyms_bp.route("/", methods=["GET"])
 def get_all_gyms():
     gyms= db.session.execute(select(Gym)).scalars().all()
     return public_gyms_schema.jsonify(gyms), 200
 
+# ---------------------------
+# Get a gym by its ID
+# ---------------------------
 @gyms_bp.route("/<int:gym_id>", methods=["GET"])
 def get_gym_by_id(gym_id):
     gym = db.session.get(Gym, gym_id)
@@ -70,6 +83,9 @@ def get_gym_by_id(gym_id):
         return jsonify({"error": "Gym not found"}), 404
     return public_gym_schema.jsonify(gym), 200
 
+# ---------------------------
+# Get all members for a gym
+# ---------------------------
 @gyms_bp.route("/members", methods=["GET"])
 @token_required
 def get_gym_members(gym_id):
@@ -86,6 +102,9 @@ def get_gym_members(gym_id):
 
     return members_schema.jsonify(members), 200
 
+# ---------------------------
+# Update gym info
+# ---------------------------
 @gyms_bp.route("/update", methods=["PUT"])
 @token_required
 def update_gym(gym_id):
@@ -106,12 +125,16 @@ def update_gym(gym_id):
         if existing_gym:
             return jsonify({"error": "Email already in use by another gym"}), 400
 
+    # Update gym fields
     for key, value in gym_data.items():
         setattr(gym, key, value)
 
     db.session.commit()
     return gym_schema.jsonify(gym), 200
 
+# ---------------------------
+# Delete a gym
+# ---------------------------
 @gyms_bp.route("/delete", methods=["DELETE"])
 @token_required
 def delete_gym(gym_id):

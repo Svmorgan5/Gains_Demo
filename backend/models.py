@@ -14,6 +14,7 @@ db = SQLAlchemy(model_class=Base)
 class Gym(Base):
     __tablename__ = "gyms"
 
+    # Basic info for each gym, including login credentials
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(db.String(255), nullable=False)
     email: Mapped[str] = mapped_column(db.String(255), unique=True, nullable=False)
@@ -21,13 +22,14 @@ class Gym(Base):
     contact_number: Mapped[str] = mapped_column(db.String(20), nullable=True)
     password_hash: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
-
+    # Each gym can have multiple subscriptions (memberships)
     subscriptions: Mapped[List["GymSubscription"]] = db.relationship("GymSubscription", back_populates="gym", cascade="all, delete-orphan")
 
 
 class Member(Base):
     __tablename__ = "members"
 
+    # Basic info for each member, including login credentials
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(db.String(255), nullable=False)
     email: Mapped[str] = mapped_column(db.String(255), unique=True, nullable=False)
@@ -35,6 +37,8 @@ class Member(Base):
     phone: Mapped[str] = mapped_column(db.String(20), nullable=True)
     join_date: Mapped[date] = mapped_column(db.Date, default= date.today, nullable=False)
     is_active: Mapped[bool] = mapped_column(db.Boolean, default=True, nullable=False)
+
+    # Each member can have multiple subscriptions to gyms
     subscriptions: Mapped[List["GymSubscription"]] = db.relationship("GymSubscription", back_populates="member", cascade="all, delete-orphan")
 
 
