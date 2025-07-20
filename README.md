@@ -131,11 +131,6 @@ pytest
 
 ---
 
-## License
-
-MIT License
-
----
 
 ## Credits
 
