@@ -1,0 +1,234 @@
+openapi: 3.0.0
+info:
+  title: Gains Intermediate Demo API
+  version: 1.0.0
+  description: API for gyms, members, subscriptions, and payments.
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /gyms/:
+    post:
+      summary: Create a new gym
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+              required: [name, email, password]
+      responses:
+        '201':
+          description: Gym created
+
+  /gyms/login:
+    post:
+      summary: Gym login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+              required: [email, password]
+      responses:
+        '200':
+          description: Login successful
+
+  /gyms/update:
+    put:
+      summary: Update gym info
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+      responses:
+        '200':
+          description: Gym updated
+
+  /gyms/members:
+    get:
+      summary: List all members for this gym
+      responses:
+        '200':
+          description: List of members
+
+  /members/:
+    post:
+      summary: Create a new member (via gym)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+              required: [name, email, password]
+      responses:
+        '201':
+          description: Member created
+
+  /members/login:
+    post:
+      summary: Member login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+              required: [email, password]
+      responses:
+        '200':
+          description: Login successful
+
+  /members/me:
+    get:
+      summary: Get member profile & subscriptions
+      responses:
+        '200':
+          description: Member profile
+
+    put:
+      summary: Update member profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+      responses:
+        '200':
+          description: Member updated
+
+    delete:
+      summary: Delete member account
+      responses:
+        '204':
+          description: Member deleted
+
+  /subscriptions/gym:
+    get:
+      summary: List all subscriptions for this gym
+      responses:
+        '200':
+          description: List of subscriptions
+
+  /subscriptions/member:
+    get:
+      summary: List all subscriptions for this member
+      responses:
+        '200':
+          description: List of subscriptions
+
+  /subscriptions/{subscription_id}:
+    put:
+      summary: Update a subscription
+      parameters:
+        - name: subscription_id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: { type: string }
+      responses:
+        '200':
+          description: Subscription updated
+
+    delete:
+      summary: Cancel a subscription
+      parameters:
+        - name: subscription_id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Subscription deleted
+
+  /payments/gym:
+    get:
+      summary: List all payments for this gym
+      responses:
+        '200':
+          description: List of payments
+
+  /payments/member:
+    get:
+      summary: List all payments for this member
+      responses:
+        '200':
+          description: List of payments
+
+  /payments/subscription/{subscription_id}:
+    get:
+      summary: List payments for a subscription
+      parameters:
+        - name: subscription_id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: List of payments
+
+    post:
+      summary: Create a payment for a subscription
+      parameters:
+        - name: subscription_id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount: { type: number }
+                status: { type: string }
+              required: [amount]
+      responses:
+        '201':
+          description: Payment created
+
+  /payments/{payment_id}:
+    delete:
+      summary: Delete a payment
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Payment deleted

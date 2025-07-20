@@ -1,0 +1,28 @@
+/* styles.css – lean, dark “gym-floor” vibe */
+body {
+  background: #15171a;          /* deep slate */
+  color: #e4e7eb;
+  font-family: system-ui, sans-serif;
+}
+.navbar-brand {
+  font-size: 1.4rem;
+}
+.btn-primary,
+.nav-pills .nav-link.active {
+  background: #0d6efd;          /* Bootstrap primary blue */
+  border: none;
+}
+.btn-success { background:#198754; }
+.table-dark th { background:#26282c; }
+/* Make success and error messages bold and dark */
+.text-success, .text-danger {
+  font-weight: bold;
+  color: #212529 !important; /* Bootstrap's dark text */
+  background: #d1e7dd;       /* Light green for success */
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.text-danger {
+  background: #f8d7da;       /* Light red for error */
+}

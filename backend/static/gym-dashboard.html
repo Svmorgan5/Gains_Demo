@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GainsIntermediate – Gym Dashboard</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom styling -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-dark text-light">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-dark bg-black p-3 mb-4">
+  <span class="navbar-brand fw-bold">
+    <i class="bi bi-activity me-2 text-primary"></i>Gains<span class="text-primary">Intermediate</span>
+  </span>
+  <button class="btn btn-outline-light" id="logout">Logout</button>
+</nav>
+
+<div class="container">
+
+  <!-- ========== ADD MEMBER ========== -->
+  <div class="card bg-secondary p-3 mb-4">
+    <h5>Add Member</h5>
+    <form id="member-form" class="vstack gap-2">
+      <input name="name"  class="form-control" placeholder="Member Name" required>
+      <input name="email" class="form-control" placeholder="Email" type="email" required>
+      <input name="phone" class="form-control" placeholder="Phone">
+      <select name="subscription_name" class="form-select" required>
+        <option value="" disabled selected>Select Subscription</option>
+        <option value="basic">Basic</option>
+        <option value="premium">Premium</option>
+        <option value="vip">VIP</option>
+      </select>
+      <input name="password" class="form-control" placeholder="Password" type="password" required>
+      <button class="btn btn-primary">Add Member</button>
+    </form>
+    <div id="member-msg" class="small mt-2"></div>
+  </div>
+
+  <!-- ========== TABS ========== -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#members">Members</a></li>
+    <li class="nav-item"><a class="nav-link"        data-bs-toggle="tab" href="#subs">Subscriptions</a></li>
+    <li class="nav-item"><a class="nav-link"        data-bs-toggle="tab" href="#pays">Payments</a></li>
+  </ul>
+
+  <div class="tab-content">
+
+    <!-- ----- MEMBERS TAB ----- -->
+    <div class="tab-pane fade show active pt-3" id="members">
+      <button class="btn btn-outline-light mb-2" id="load-members">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+      <table class="table table-dark table-striped">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
+        <tbody id="members-body"></tbody>
+      </table>
+    </div>
+
+    <!-- ----- SUBSCRIPTIONS TAB ----- -->
+    <div class="tab-pane fade pt-3" id="subs">
+      <button class="btn btn-outline-light mb-2" id="load-subs">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+      <table class="table table-dark table-striped">
+        <thead><tr><th>ID</th><th>Member</th><th>Plan</th><th>Start</th><th>End</th><th>Pay</th></tr></thead>
+        <tbody id="subs-body"></tbody>
+      </table>
+    </div>
+
+    <!-- ----- PAYMENTS TAB ----- -->
+    <div class="tab-pane fade pt-3" id="pays">
+      <button class="btn btn-outline-light mb-2" id="load-pays">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+      <table class="table table-dark table-striped">
+        <thead><tr><th>ID</th><th>Member</th><th>Amount</th><th>Date</th></tr></thead>
+        <tbody id="pays-body"></tbody>
+      </table>
+    </div>
+
+  </div><!-- /tab-content -->
+</div><!-- /container -->
+
+<!-- ===== PAYMENT MODAL ===== -->
+<div class="modal fade" id="payModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Record Payment</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="pay-form">
+        <div class="modal-body">
+          <input type="hidden" name="member_id">
+          <input type="hidden" name="subscription_id">
+          <div class="mb-2">
+            <label class="form-label">Amount (USD)</label>
+            <input name="amount" class="form-control" placeholder="0.00" type="number" min="0" step="0.01" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ===== DASHBOARD SCRIPT ===== -->
+<script type="module">
+/* ---------- Auth helpers ---------- */
+const token = localStorage.getItem("gains_token");
+if (!token) window.location.href = "index.html";
+
+const authHead = { Authorization: `Bearer ${token}` };
+const $ = (s) => document.querySelector(s);
+const flash = (el, t, ok=true) => {
+  el.textContent = t;
+  el.className = "small mt-2 " + (ok ? "text-success" : "text-danger");
+};
+
+/* ---------- Logout ---------- */
+$("#logout").onclick = () => { localStorage.clear(); window.location.href = "index.html"; };
+
+/* =========================================================
+   MEMBERS (Add + List)
+========================================================= */
+$("#member-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  flash($("#member-msg"), "Submitting…");
+  const body = Object.fromEntries(new FormData(e.target));
+  const r = await fetch("/members/", {
+    method: "POST",
+    headers: { ...authHead, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  flash($("#member-msg"), r.ok ? "Member added ✔" : "Error", r.ok);
+  if (r.ok) {
+    e.target.reset();
+    loadMembers();
+    loadSubs();
+  }
+});
+
+async function loadMembers(){
+  const r = await fetch("/gyms/members", { headers: authHead });
+  if (!r.ok) return;
+  const m = await r.json();
+  $("#members-body").innerHTML = m.map(
+    x=>`<tr><td>${x.id}</td><td>${x.name}</td><td>${x.email}</td><td>${x.phone||""}</td></tr>`
+  ).join("");
+}
+$("#load-members").onclick = loadMembers;
+loadMembers();
+
+/* =========================================================
+   SUBSCRIPTIONS (List + Pay Modal)
+========================================================= */
+const payModalEl = document.getElementById("payModal");
+const payModal   = new bootstrap.Modal(payModalEl);
+
+/* Open Pay modal */
+window.openPayModal = (subId, memId, memName) => {
+  payModalEl.querySelector(".modal-title").textContent = `Record Payment – ${memName}`;
+  const f = payModalEl.querySelector("#pay-form");
+  f.subscription_id.value = subId;
+  f.member_id.value       = memId;
+  f.amount.value          = "";
+  payModal.show();
+};
+
+/* Submit modal → POST payment */
+document.getElementById("pay-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form           = e.target;
+  const subscriptionId = parseInt(form.subscription_id.value,10);
+  const amount         = parseFloat(form.amount.value);
+
+  const r = await fetch(`/payments/subscription/${subscriptionId}`, {
+    method: "POST",
+    headers: { ...authHead, "Content-Type": "application/json" },
+    body:   JSON.stringify({ amount, status: "paid" }) // <-- FIXED
+  });
+
+  if (r.ok){
+    payModal.hide();
+    loadPays();
+    loadSubs();
+  } else {
+    alert("Error recording payment");
+  }
+});
+
+async function loadSubs(){
+  const r = await fetch("/subscriptions/gym", { headers: authHead });
+  if (!r.ok) return;
+  const arr = await r.json();
+  $("#subs-body").innerHTML = arr.map(s=>{
+    const mName = s.member_name.replace(/'/g,"&#39;");
+    return `
+      <tr>
+        <td>${s.id}</td>
+        <td>${s.member_name}</td>
+        <td>${s.subscription_name}</td>
+        <td>${s.start_date}</td>
+        <td>${s.end_date || "-"}</td>
+        <td>
+          <button class="btn btn-sm btn-outline-light"
+                  onclick="openPayModal(${s.id}, ${s.member_id}, '${mName}')">
+            <i class="bi bi-currency-dollar"></i>
+          </button>
+        </td>
+      </tr>`;
+  }).join("");
+}
+$("#load-subs").onclick = loadSubs;
+loadSubs();
+
+/* =========================================================
+   PAY
+========================================================= */
+async function loadPays(){
+  const r = await fetch("/payments/gym", { headers: authHead });
+  if (!r.ok) return;
+  const p = await r.json();
+  $("#pays-body").innerHTML = p.map(
+    x=>`<tr><td>${x.id}</td><td>${x.member_name}</td><td>$${x.amount}</td><td>${x.paid_at}</td></tr>`
+  ).join("");
+}
+$("#load-pays").onclick = loadPays;
+loadPays();
+</script>
+</body>
+</html>
+
