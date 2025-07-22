@@ -1,0 +1,755 @@
+{
+	"info": {
+		"_postman_id": "a736d2fd-4dcd-44fd-bc9a-21a0fecf46f7",
+		"name": "Gains Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41867498"
+	},
+	"item": [
+		{
+			"name": "Create a GYM",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"location\": \"Warwick\",\r\n    \"name\": \"Elevate\",\r\n    \"password\": \"AABBCC123\",\r\n    \"email\": \"Test3@test.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/gyms",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"gyms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN GYM",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"password\": \"AABBCC123\",\r\n    \"email\": \"Test3@test.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/gyms/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"gyms",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Gym by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/gyms/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"gyms",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Gym by Token Auth",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTM0NTQsImlhdCI6MTc1Mjk1MDI1NCwic3ViIjoiMiJ9.m6xdMcgtt9VpvbRVYQ0WCoCPvE8xgWYlfo3qV_2T4ss",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"Rest@test.com\",\r\n    \"location\": \"Cranston\",\r\n    \"name\": \"Over the Hill\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/gyms/update",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"gyms",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all gyms",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/gyms/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"gyms",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete gym with AUTH token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTM0NTQsImlhdCI6MTc1Mjk1MDI1NCwic3ViIjoiMiJ9.m6xdMcgtt9VpvbRVYQ0WCoCPvE8xgWYlfo3qV_2T4ss",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/gyms/delete",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"gyms",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Member with Gym token AUTH",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTYzMDIsImlhdCI6MTc1Mjk1MzEwMiwic3ViIjoiMyJ9.6wg9J9r3jYZ-vb3XAPXV3HCnWjQbp3QdV-UkZYUGgxY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"Jakem@test.com\",\r\n    \"name\": \"Jake\",\r\n    \"password\": \"abc123456\",\r\n    \"subscription_name\": \"vip\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/members",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET members of Gym",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTYzMDIsImlhdCI6MTc1Mjk1MzEwMiwic3ViIjoiMyJ9.6wg9J9r3jYZ-vb3XAPXV3HCnWjQbp3QdV-UkZYUGgxY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"password\": \"AABBCC123\",\r\n    \"email\": \"Test3@test.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/gyms/members",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"gyms",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Member Login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTYzMDIsImlhdCI6MTc1Mjk1MzEwMiwic3ViIjoiMyJ9.6wg9J9r3jYZ-vb3XAPXV3HCnWjQbp3QdV-UkZYUGgxY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"Jakem@test.com\",\r\n    \r\n    \"password\": \"abc123456\"\r\n  \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/members/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"members",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Personal Member Information",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTcxMDgsImlhdCI6MTc1Mjk1MzkwOCwic3ViIjoiMiJ9.lRNxX3mdisCKkhH1KW1Hp81HCEa9f82nw_SRjIsdgb4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/members/me",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"members",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Member Information",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTcxMDgsImlhdCI6MTc1Mjk1MzkwOCwic3ViIjoiMiJ9.lRNxX3mdisCKkhH1KW1Hp81HCEa9f82nw_SRjIsdgb4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"Jakem@test.com\",\r\n    \"is_active\": true,\r\n    \"join_date\": \"2025-07-19\",\r\n    \"name\": \"Jake\",\r\n    \"password\":\"Bball19484\",\r\n    \"phone\": \"432-123-1234\"\r\n\r\n        \r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/members/me",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"members",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Member Delete by MEMBER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTcxMDgsImlhdCI6MTc1Mjk1MzkwOCwic3ViIjoiMiJ9.lRNxX3mdisCKkhH1KW1Hp81HCEa9f82nw_SRjIsdgb4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/members/me",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"members",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gym Views all its subs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTYzMDIsImlhdCI6MTc1Mjk1MzEwMiwic3ViIjoiMyJ9.6wg9J9r3jYZ-vb3XAPXV3HCnWjQbp3QdV-UkZYUGgxY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"password\": \"AABBCC123\",\r\n    \"email\": \"Test3@test.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/subscriptions/gym",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"subscriptions",
+						"gym"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gym or Member can Update subscription by sub ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTk1NjgsImlhdCI6MTc1Mjk1NjM2OCwic3ViIjoiMyJ9.ydaAvJeF3cQgPW8cSZqZA2KGL07MLwVZ1RXdSnGduyM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subscription_name\": \"premium\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/subscriptions/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"subscriptions",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Sub by ID (removes member if no other SUBS)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5OTk1NjgsImlhdCI6MTc1Mjk1NjM2OCwic3ViIjoiMyJ9.ydaAvJeF3cQgPW8cSZqZA2KGL07MLwVZ1RXdSnGduyM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subscription_name\": \"premium\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/subscriptions/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"subscriptions",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Payment and status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTMwMDA1MzIsImlhdCI6MTc1Mjk1NzMzMiwic3ViIjoiMyJ9.eWNFEVpBgnmojO98-8AOzwX5ZCVCd-BASW3YZn9jqRw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"amount\": 75,\r\n   \"gym_subscription_id\": 8,\r\n   \"status\": \"failed\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/payments/subscription/8",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						"subscription",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Payments for GYM",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTMwMDA1MzIsImlhdCI6MTc1Mjk1NzMzMiwic3ViIjoiMyJ9.eWNFEVpBgnmojO98-8AOzwX5ZCVCd-BASW3YZn9jqRw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"amount\": 75,\r\n   \"gym_subscription_id\": 8,\r\n   \"status\": \"failed\" \r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/payments/gym",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						"gym"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Members' Payments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTMwMDIwOTUsImlhdCI6MTc1Mjk1ODg5NSwic3ViIjoiNiJ9.e1rwb_J7jb-HFWw7DAZqrV6P8V4koqs2_0T4w9o0Lz4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"amount\": 75,\r\n   \"gym_subscription_id\": 8,\r\n   \"status\": \"failed\" \r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/payments/member",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						"member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gym or member GET payments check",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTMwMDA1MzIsImlhdCI6MTc1Mjk1NzMzMiwic3ViIjoiMyJ9.eWNFEVpBgnmojO98-8AOzwX5ZCVCd-BASW3YZn9jqRw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"amount\": 75,\r\n   \"gym_subscription_id\": 8,\r\n   \"status\": \"failed\" \r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/payments/subscription/8",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						"subscription",
+						"8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

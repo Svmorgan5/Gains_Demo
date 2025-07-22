@@ -7,10 +7,11 @@ from backend.blueprints.gymSubscriptions import subscriptions_bp
 from backend.blueprints.payment import payment_bp
 import os
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 
 
 SWAGGER_URL = '/api/docs'
-API_URL     = '/swagger.yaml'
+API_URL = '/swagger.yaml'
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
@@ -20,6 +21,7 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(f'config.{config_name}')
+    CORS(app)
     # add extensions
     db.init_app(app)
     ma.init_app(app)
