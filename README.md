@@ -61,6 +61,22 @@ Gains Intermediate Demo/
 
 ---
 
+**Before running Docker Compose, it is recommended to test your API routes locally using Postman.**  
+All routes in the provided `postman_collection.json` were tested against the local server at [http://127.0.0.1:5000](http://127.0.0.1:5000).
+
+To do this:
+
+1. Set up your environment:
+```sh
+    python -m venv venv
+    venv\Scripts\activate
+    pip install -r requirements.txt
+    python flask_app.py
+    
+2. Use Postman to send requests to `http://127.0.0.1:5000` as shown in the collection.
+```
+**Testing locally first ensures all endpoints work as expected before deploying with Docker Compose.**
+
 ## Setup & Usage
 
 ### 1. **Clone the Repository**
@@ -71,7 +87,7 @@ cd Gains Intermediate Demo
 
 ### 2. **Docker Compose**
 Build and run the app and MySQL database:
-```sh
+```
 docker-compose up --build
 ```
 - App runs at [http://localhost:5000](http://localhost:5000)

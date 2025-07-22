@@ -5,7 +5,7 @@ from backend import create_app
 # It also creates all database tables before running tests.
 @pytest.fixture
 def app():
-    app = create_app('TestingConfig')
+    app = create_app('DevelopmentConfig')  # Use DevelopmentConfig, or TestingConfig for testing
     with app.app_context():
         from backend.models import db
         db.create_all()

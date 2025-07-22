@@ -2,7 +2,7 @@ from backend import create_app
 from backend.models import db
 
 
-app = create_app('TestingConfig')  # Change to 'DevelopmentConfig' or 'TestingConfig' as needed
+app = create_app('DevelopmentConfig')  # Use TestingConfig for testing
 
 
 with app.app_context():
